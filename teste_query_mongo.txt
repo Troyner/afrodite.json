@@ -1,0 +1,51 @@
+db.getCollection('junk').aggregate([
+  { "$addFields": {
+    "Matches": {
+      "$trunc": {
+        "$multiply": [
+          { "$divide": [
+            { "$size": {
+              "$filter": {
+                "input": "$nome",
+                "as": "c",
+                "cond": { "$in": [ "$$c", ["Chocolate","Gengibre"] ] }
+              }
+            }}, 
+            { "$size": "$nome" }
+          ]},
+          100
+        ]
+      }
+    }
+  }}
+])
+
+db.getCollection('recipes').aggregate([
+        {
+            "$addFields": {
+                "$trunc": {
+					"$multiply": [
+						{ 
+							"$divide": [
+								{ 
+									"$size": {
+										"$filter": {
+											"input": "$nome",
+											"as": "c",
+											"cond": { "$in": [ "$$c", ["chocolate", "cacau"] ] }
+										}
+									}
+								}, 
+								{ 
+									"$size": "$nome" 
+								}
+							]
+						},
+						100
+					]
+                }
+            }
+        }
+        ,100
+    ]
+)
